@@ -1,0 +1,48 @@
+﻿@model SimplePaging.Models.SimpleModel
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>分页</title>
+    <style>
+        .pager {
+            font: 12px/1.5 tahoma,arial,'Hiragino Sans GB',\5b8b\4f53,sans-serif;
+            overflow: hidden;
+        }
+
+            .pager a, span {
+                float: left;
+                line-height: 24px;
+                padding: 0 6px;
+                margin: 0 3px;
+            }
+
+            .pager a {
+                text-decoration: none;
+                background-color: steelblue;
+                color: white;
+            }
+    </style>
+</head>
+<body>
+    <div>
+        <div>使用ViewModel方式</div>
+        @using (Html.BeginForm(null, null, FormMethod.Get))
+        {
+            @Html.ValidationSummary(true)
+            @Html.EditorForModel()
+            var pageSizeList = Model.PageSizeCollection.Select(o => new SelectListItem { Text = o.ToString(), Value = o.ToString() }).ToList();
+            @Html.DropDownListFor(o => o.PageSize, pageSizeList, Model.PageSize)
+            <input type="submit" value="确定" />
+        }
+        @Model
+    </div>
+    <div>直接在View中使用</div>
+    @(new Paging.PagingModel(Model.PageIndex,Model.PageSize,Model.TotalCount, 5, "上页", "下页"))
+    <div>直接在View中使用</div>
+    @(new Paging.PagingModel(Model.PageIndex, Model.PageSize, Model.TotalCount, 11, "往前", "往后"))
+</body>
+</html>
